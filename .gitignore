@@ -1,0 +1,7 @@
+# Python/Django
+backend/env/        # Ignore Python virtual environment
+*.pyc                # Ignore compiled Python files
+
+# Node.js/React
+frontend/node_modules/  # Ignore Node.js dependencies
+
