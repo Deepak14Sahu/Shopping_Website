@@ -6,3 +6,7 @@ class ProductsListView(generics.ListCreateAPIView):
     queryset = ProductList.objects.all()
     serializer_class = ProductsListSerializer
     
+class ProductDetailView(generics.RetrieveAPIView):
+    queryset = ProductList.objects.all()
+    serializer_class = ProductsListSerializer
+    lookup_field = 'pk'
