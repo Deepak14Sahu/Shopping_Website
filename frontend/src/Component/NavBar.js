@@ -3,15 +3,17 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { NavLink } from "react-router-dom";
 import logo from "./logo.png";
+import { useSelector } from "react-redux";
+import { NavDropdown } from "react-bootstrap";
 
 
 function NavBar() {
+    const user = useSelector(state => state.account.user)
 
     return (
         <Navbar sticky="top" expand="lg" style={{ background: "#5a5a5a" }}>
             <Container fluid>
                 <img src={logo} style={{ width: "6%" }} alt="" />
-
                 <Navbar.Toggle aria-controls="navbarScroll" />
                 <Navbar.Collapse id="navbarScroll">
                     <Nav
@@ -33,7 +35,7 @@ function NavBar() {
                         </NavLink>
 
 
-                        <NavLink
+                        {user && <NavLink
                             to="/products"
                             className="nav-link"
                             style={({ isActive }) => {
@@ -44,11 +46,10 @@ function NavBar() {
                             }}
                         >
                             Products
-                        </NavLink>
+                        </NavLink>}
 
                     </Nav>
-
-                    <Nav className=" my-2 my-lg-0 ">
+                    {user ? (<Nav className=" my-2 my-lg-0 ">
                         <NavLink to="/wishlist" className="mx-3">
                             <i className="fa fa-heart fa-2x" style={{ color: "black" }}></i>
                             <span className="position-absolute  translate-middle badge rounded-pill bg-danger">
@@ -65,7 +66,46 @@ function NavBar() {
                                 2
                             </span>
                         </NavLink>
+                        <Nav className="mx-3">
+                            <i className="fa fa-user fa-2x" style={{ color: "black" }}></i>
+                            <NavDropdown menuVariant="dark" align="end">
+                                <NavLink
+                                    className="text-decoration-none"
+                                    style={{ color: "beige", margin: "32%" }}
+                                    to="/profile"
+                                >
+                                    Profile
+                                </NavLink>
+                                <NavDropdown.Divider />
+                                <NavLink
+                                    to="/"
+                                    className="text-decoration-none"
+                                    style={{ color: "beige", margin: "32%" }}
+
+                                >
+                                    Logout
+                                </NavLink>
+                            </NavDropdown>
+                        </Nav>
                     </Nav>
+                    ) : (
+                        <Nav>
+                            <NavLink
+                                to="/login"
+                                className="nav-link"
+                                style={({ isActive }) => {
+                                    return {
+                                        fontWeight: isActive ? "bold" : "",
+                                        color: isActive ? "orange" : "beige",
+                                    };
+                                }}
+                            >
+                                Login
+                            </NavLink>
+                        </Nav>
+                    )}
+
+
 
 
 
@@ -76,3 +116,10 @@ function NavBar() {
 }
 
 export default NavBar;
+
+
+
+
+
+
+

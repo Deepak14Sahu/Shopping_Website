@@ -21,7 +21,6 @@ const AccountSlice = createSlice({
     name: 'account',
     initialState: {
         user: null,
-
         is_loading: false,
         is_error: null
     },
