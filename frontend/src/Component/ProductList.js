@@ -29,22 +29,20 @@ function ProductList() {
                                     />
                                 </div>
 
-                                {/* <Link
-                                    className="card-action"
-                                >
+                                <Link className="card-action">
                                     <i className="fa fa-heart fa-2x"></i>
-                                </Link> */}
+                                </Link>
                                 <div className="card-heading">{product.name}</div>
                                 <div className="card-text">
                                     {product.description.slice(0, 90)}...
                                 </div>
                                 <div className="card-text">&#8377; {product.price}</div>
-                                {/* <Link
+                                <Link
                                     className="card-button text-decoration-none"
 
                                 >
                                     Add to Cart
-                                </Link> */}
+                                </Link>
                             </div>
                         </div>
                     ))}

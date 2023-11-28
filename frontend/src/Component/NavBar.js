@@ -19,7 +19,7 @@ function NavBar() {
                         style={{ maxHeight: "100px", fontSize: "18px" }}
                         navbarScroll
                     >
-                        {/* <NavLink
+                        <NavLink
                             to="/"
                             className="nav-link"
                             style={({ isActive }) => {
@@ -44,12 +44,12 @@ function NavBar() {
                             }}
                         >
                             Products
-                        </NavLink> */}
+                        </NavLink>
 
                     </Nav>
 
                     <Nav className=" my-2 my-lg-0 ">
-                        {/* <NavLink to="/wishlist" className="mx-3">
+                        <NavLink to="/wishlist" className="mx-3">
                             <i className="fa fa-heart fa-2x" style={{ color: "black" }}></i>
                             <span className="position-absolute  translate-middle badge rounded-pill bg-danger">
                                 2
@@ -64,7 +64,7 @@ function NavBar() {
                             <span className="position-absolute translate-middle badge rounded-pill bg-danger">
                                 2
                             </span>
-                        </NavLink> */}
+                        </NavLink>
                     </Nav>
 
 
