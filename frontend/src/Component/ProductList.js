@@ -13,7 +13,6 @@ function ProductList() {
     }, [dispatch])
 
     const Products = useSelector((state) => state.product.products)
-    console.log(Products)
 
     return (
         <div className="container" style={{ marginTop: "20px" }}>

@@ -3,11 +3,13 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { NavLink } from "react-router-dom";
 import logo from "./logo.png";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { NavDropdown } from "react-bootstrap";
+import { logout } from "../features/AccountSlice";
 
 
 function NavBar() {
+    const dispatch = useDispatch()
     const user = useSelector(state => state.account.user)
 
     return (
@@ -81,6 +83,7 @@ function NavBar() {
                                     to="/"
                                     className="text-decoration-none"
                                     style={{ color: "beige", margin: "32%" }}
+                                    onClick={() => dispatch(logout())}
 
                                 >
                                     Logout
