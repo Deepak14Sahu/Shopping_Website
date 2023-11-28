@@ -2,12 +2,12 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import axios from "axios"
 
 export const getAllProducts = createAsyncThunk("getProducts", async () => {
-    const response = await axios.get("http://127.0.0.1:8000/api/product/list/")
+    const response = await axios.get("http://127.0.0.1:8000/api/product/list")
     return response.data
 
 })
 
-const ProductListSlice = createSlice({
+const ProductSlice = createSlice({
     name: "products",
     initialState: {
         products: [],
@@ -32,4 +32,4 @@ const ProductListSlice = createSlice({
 }
 )
 
-export default ProductListSlice.reducer
+export default ProductSlice.reducer
