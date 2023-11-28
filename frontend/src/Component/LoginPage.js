@@ -1,25 +1,23 @@
 import React, { useState } from "react";
 import { Container, Col, Card, Form, Button } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser } from "../features/AccountSlice";
 
 
 function LoginPage() {
-    const [user, setUser] = useState({
-        email: "",
-        password: "",
-    });
-    const [error, setError] = useState(null);
+    const dispatch = useDispatch()
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setUser((prevUser) => ({
-            ...prevUser,
-            [name]: value,
-        }));
-    };
+    const error = useSelector((state) => state.account.is_error);
+
     const handleLogin = (e) => {
         e.preventDefault();
+        dispatch(loginUser({ email, password }))
 
     }
+
+
 
 
     return (
@@ -54,8 +52,8 @@ function LoginPage() {
                                     type="email"
                                     name="email"
                                     size="lg"
-                                    onChange={handleChange}
-                                    value={user.email}
+                                    onChange={e => setEmail(e.target.value)}
+                                    value={email}
                                     autoComplete="username"
                                 />
                             </Form.Group>
@@ -68,9 +66,9 @@ function LoginPage() {
                                 <Form.Control
                                     type="password"
                                     name="password"
-                                    value={user.password}
+                                    value={password}
                                     size="lg"
-                                    onChange={handleChange}
+                                    onChange={e => setPassword(e.target.value)}
                                     autoComplete="current-password"
                                 />
                             </Form.Group>
