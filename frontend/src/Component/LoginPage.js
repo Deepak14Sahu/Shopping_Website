@@ -1,25 +1,27 @@
 import React, { useState } from "react";
-import { Container, Col, Card, Form, Button } from "react-bootstrap";
+import { Container, Col, Card, Form, Button, Spinner } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../features/AccountSlice";
+import { useNavigate } from "react-router-dom";
 
 
 function LoginPage() {
     const dispatch = useDispatch()
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const navigate = useNavigate()
 
-    const error = useSelector((state) => state.account.is_error);
+    const { user, is_loading, is_error } = useSelector((state) => state.account);
 
     const handleLogin = (e) => {
         e.preventDefault();
         dispatch(loginUser({ email, password }))
 
     }
+    if (user) {
+        navigate('/products')
 
-
-
-
+    }
     return (
         <Container
             fluid
@@ -72,7 +74,7 @@ function LoginPage() {
                                     autoComplete="current-password"
                                 />
                             </Form.Group>
-                            {error && <div className="alert alert-danger">{error}</div>}
+                            {is_error && <div className="alert alert-danger">{is_error}</div>}
 
                             <Button
                                 variant="outline-light"
@@ -80,7 +82,7 @@ function LoginPage() {
                                 className="m-2 px-5"
                                 size="lg"
                             >
-                                Login
+                                {is_loading ? <Spinner /> : "Login"}
                             </Button>
                         </form>
                     </Card.Body>
