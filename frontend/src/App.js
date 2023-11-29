@@ -1,10 +1,10 @@
 import { Route, Routes } from 'react-router-dom';
 import NavBar from './Component/NavBar';
-import ProductList from './Component/ProductList';
-import LoginPage from './Component/LoginPage';
+import ProductList from './Pages/ProductList';
+import LoginPage from './Pages/LoginPage';
 import Footer from './Component/Footer';
-import LandingPage from './Component/LandingPage';
-import RegisterPage from './Component/RegisterPage';
+import LandingPage from './Pages/LandingPage';
+import RegisterPage from './Pages/RegisterPage';
 
 
 
