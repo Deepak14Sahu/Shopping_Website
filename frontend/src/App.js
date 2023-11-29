@@ -5,6 +5,7 @@ import LoginPage from './Pages/LoginPage';
 import Footer from './Component/Footer';
 import LandingPage from './Pages/LandingPage';
 import RegisterPage from './Pages/RegisterPage';
+import ProtectedRoute from './Component/ProtectedRoute';
 
 
 
@@ -16,7 +17,7 @@ function App() {
         <Route path='/' element={<LandingPage />} />
         <Route path='/login' element={<LoginPage />} />
         <Route path='/register' element={<RegisterPage />} />
-        <Route path='/products' element={<ProductList />} />
+        <Route path='/products' element={<ProtectedRoute><ProductList /></ProtectedRoute>} />
       </Routes>
       <Footer />
 
