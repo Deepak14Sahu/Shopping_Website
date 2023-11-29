@@ -1,11 +1,17 @@
-import React, { useState } from "react";
-import { Container, Col, Card, Form, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Container, Col, Card, Form, Button, Spinner } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { registerUser, resetIsCreated } from "../features/AccountSlice";
 
 
 
 function RegisterPage() {
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const { is_loading, is_error, is_created } = useSelector((state) => state.account);
+
 
     const [formData, setFormData] = useState({
         name: '',
@@ -29,15 +35,32 @@ function RegisterPage() {
         e.preventDefault();
         if (!formData.name || !formData.email || !formData.password1 || !formData.password2) {
             toast.error("All fields are required")
-
+            return
         }
         if (formData.password1 !== formData.password2) {
             toast.error("Password Don't match")
             setError(true)
+            return
 
         }
+        dispatch(registerUser({ ...formData }))
 
     }
+    useEffect(() => {
+
+        if (is_error) {
+            toast.error(is_error)
+        }
+        if (is_created) {
+            toast.success("Your account has been created. Please Login!!")
+            navigate('/login')
+        }
+        return () => {
+            dispatch(resetIsCreated())
+        }
+    }, [is_error, is_created, navigate, dispatch])
+
+
 
     return (
         <Container
@@ -91,8 +114,9 @@ function RegisterPage() {
                                     value={formData.email}
                                     autoComplete="Email"
                                     required
-
+                                    isInvalid={is_error}
                                 />
+                                {is_error && <p style={{ color: "red" }}>{is_error}</p>}
 
                             </Form.Group>
 
@@ -135,7 +159,8 @@ function RegisterPage() {
                                 className="m-2 px-5"
                                 size="lg"
                             >
-                                Register
+                                {is_loading ? <Spinner /> : " Register"}
+
                             </Button>
 
                             <p>

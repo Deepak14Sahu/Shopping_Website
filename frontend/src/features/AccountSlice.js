@@ -16,18 +16,17 @@ export const loginUser = createAsyncThunk("loginUser", async ({ email, password 
         }
     }
 })
-export const registerUser = createAsyncThunk("registerUser", async ({ name, email, password }, { rejectWithValue }) => {
+export const registerUser = createAsyncThunk("registerUser", async ({ name, email, password1 }, { rejectWithValue }) => {
     try {
         const response = await axios.post("http://127.0.0.1:8000/api/account/register/", {
             name: name,
             email: email,
-            password: password
+            password: password1
         })
         return response.data
     } catch (error) {
-        console.log(error)
-        if (error.response && error.response.status === 401) {
-            return rejectWithValue("Incorrect email or password. Please try again.");
+        if (error.response && error.response.status === 400) {
+            return rejectWithValue(error.response.data.email[0]);
         } else {
             return rejectWithValue('Network error. Please try again.');
         }
@@ -44,11 +43,15 @@ const AccountSlice = createSlice({
     initialState: {
         user: null,
         is_loading: false,
-        is_error: null
+        is_error: null,
+        is_created: null
     },
     reducers: {
         logout(state) {
             state.user = null
+        },
+        resetIsCreated(state) {
+            state.is_created = null
         }
     },
     extraReducers(builder) {
@@ -71,7 +74,8 @@ const AccountSlice = createSlice({
             .addCase(registerUser.fulfilled, (state, action) => {
                 state.is_loading = false
                 state.is_error = null
-                state.user = action.payload
+                state.user = null
+                state.is_created = action.payload
             })
             .addCase(registerUser.rejected, (state, action) => {
                 state.is_loading = false
@@ -81,4 +85,4 @@ const AccountSlice = createSlice({
 })
 
 export default AccountSlice.reducer
-export const { logout } = AccountSlice.actions
+export const { logout, resetIsCreated } = AccountSlice.actions
