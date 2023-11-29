@@ -3,8 +3,8 @@ import { loginAPI, registerAPI } from "./apiProvider"
 
 export const loginUser = createAsyncThunk("loginUser", async ({ email, password }, { rejectWithValue }) => {
     try {
-        const response = await loginAPI({ email, password })
-        return response.data
+        return await loginAPI({ email, password })
+
     } catch (error) {
         return rejectWithValue(error.message);
 
@@ -13,8 +13,8 @@ export const loginUser = createAsyncThunk("loginUser", async ({ email, password 
 
 export const registerUser = createAsyncThunk("registerUser", async ({ name, email, password1 }, { rejectWithValue }) => {
     try {
-        const response = await registerAPI({ name, email, password1 })
-        return response.data
+
+        return await registerAPI({ name, email, password1 })
 
     } catch (error) {
         return rejectWithValue(error.message)
@@ -27,11 +27,12 @@ const AccountSlice = createSlice({
         user: null,
         is_loading: false,
         is_error: null,
-        is_created: null
+        is_created: null,
     },
     reducers: {
         logout(state) {
             state.user = null
+            localStorage.removeItem("authtoken")
         },
         resetIsCreated(state) {
             state.is_created = null
@@ -46,6 +47,9 @@ const AccountSlice = createSlice({
                 state.is_loading = false
                 state.is_error = null
                 state.user = action.payload
+                localStorage.setItem("authtoken", JSON.stringify(action.payload))
+
+
             })
             .addCase(loginUser.rejected, (state, action) => {
                 state.is_loading = false
