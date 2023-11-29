@@ -1,21 +1,18 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { loginAPI, registerAPI } from "./apiProvider"
+import { jwtDecode } from "jwt-decode";
 
 export const loginUser = createAsyncThunk("loginUser", async ({ email, password }, { rejectWithValue }) => {
     try {
         return await loginAPI({ email, password })
-
     } catch (error) {
         return rejectWithValue(error.message);
-
     }
 })
 
 export const registerUser = createAsyncThunk("registerUser", async ({ name, email, password1 }, { rejectWithValue }) => {
     try {
-
         return await registerAPI({ name, email, password1 })
-
     } catch (error) {
         return rejectWithValue(error.message)
     }
@@ -46,10 +43,8 @@ const AccountSlice = createSlice({
             .addCase(loginUser.fulfilled, (state, action) => {
                 state.is_loading = false
                 state.is_error = null
-                state.user = action.payload
+                state.user = jwtDecode(action.payload.access).name
                 localStorage.setItem("authtoken", JSON.stringify(action.payload))
-
-
             })
             .addCase(loginUser.rejected, (state, action) => {
                 state.is_loading = false
