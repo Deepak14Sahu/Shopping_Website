@@ -1,23 +1,25 @@
 import React, { useState } from "react";
-import { Container, Col, Card, Form, Button, Spinner } from "react-bootstrap";
+import { Container, Col, Card, Form, Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 
 
 function RegisterPage() {
 
-    const [input, setInput] = useState({
+    const [formData, setFormData] = useState({
         name: '',
         email: '',
         password1: '',
         password2: ''
     }
-
     )
+    const [error, setError] = useState(false)
 
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setInput((prevUser) => ({
+        setFormData((prevUser) => ({
             ...prevUser,
             [name]: value,
         }));
@@ -25,7 +27,15 @@ function RegisterPage() {
 
     const handleRegister = (e) => {
         e.preventDefault();
+        if (!formData.name || !formData.email || !formData.password1 || !formData.password2) {
+            toast.error("All fields are required")
 
+        }
+        if (formData.password1 !== formData.password2) {
+            toast.error("Password Don't match")
+            setError(true)
+
+        }
 
     }
 
@@ -53,21 +63,23 @@ function RegisterPage() {
                             onSubmit={handleRegister}
                         >
                             <Form.Group
-                                className="mb-4 mx-5 w-100"
-                                controlId="formBasicPassword"
+                                className="mx-5 w-100"
+                                controlId="FullName"
                             >
                                 <Form.Label className="text-white">Full Name</Form.Label>
                                 <Form.Control
                                     type="text"
                                     name="name"
-                                    value={input.name}
+                                    value={formData.name}
                                     size="lg"
                                     onChange={handleChange}
-                                    autoComplete="current-password"
+                                    autoComplete="Full Name"
+                                    required
+
                                 />
                             </Form.Group>
                             <Form.Group
-                                className="mb-4 mx-5 w-100"
+                                className="mx-5 w-100"
                                 controlId="formBasicEmail"
                             >
                                 <Form.Label className="text-white">Email address</Form.Label>
@@ -76,40 +88,46 @@ function RegisterPage() {
                                     name="email"
                                     size="lg"
                                     onChange={handleChange}
-                                    value={input.email}
-                                    autoComplete="username"
+                                    value={formData.email}
+                                    autoComplete="Email"
+                                    required
+
                                 />
+
                             </Form.Group>
 
                             <Form.Group
-                                className="mb-4 mx-5 w-100"
-                                controlId="formBasicPassword"
+                                className="mx-5 w-100"
+                                controlId="formBasicPassword1"
                             >
                                 <Form.Label className="text-white">Password</Form.Label>
                                 <Form.Control
                                     type="password"
                                     name="password1"
-                                    value={input.password1}
+                                    value={formData.password1}
                                     size="lg"
                                     onChange={handleChange}
                                     autoComplete="current-password"
+                                    required
+                                    isInvalid={error}
                                 />
                             </Form.Group>
                             <Form.Group
-                                className="mb-4 mx-5 w-100"
-                                controlId="formBasicPassword"
+                                className=" mx-5 w-100"
+                                controlId="formBasicPassword2"
                             >
                                 <Form.Label className="text-white">Confirm Password</Form.Label>
                                 <Form.Control
                                     type="password"
                                     name="password2"
-                                    value={input.password2}
+                                    value={formData.password2}
                                     size="lg"
                                     onChange={handleChange}
                                     autoComplete="current-password"
+                                    required
+                                    isInvalid={error}
                                 />
                             </Form.Group>
-                            {/* {is_error && <div className="alert alert-danger">{is_error}</div>} */}
 
                             <Button
                                 variant="outline-light"
@@ -117,8 +135,12 @@ function RegisterPage() {
                                 className="m-2 px-5"
                                 size="lg"
                             >
-                                {/* {is_loading ? <Spinner /> : "Register"} */}
+                                Register
                             </Button>
+
+                            <p>
+                                Already have an account? <Link to="/login" style={{ marginLeft: "5px", textDecoration: "none", fontWeight: "bold", color: "orange" }} >Login</Link>
+                            </p>
                         </form>
                     </Card.Body>
                 </Card>

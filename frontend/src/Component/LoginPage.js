@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Container, Col, Card, Form, Button, Spinner } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../features/AccountSlice";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 
@@ -28,6 +28,7 @@ function LoginPage() {
 
         }
     }, [is_error, user, navigate])
+
     return (
         <Container
             fluid
@@ -63,6 +64,7 @@ function LoginPage() {
                                     onChange={e => setEmail(e.target.value)}
                                     value={email}
                                     autoComplete="username"
+                                    required
                                 />
                             </Form.Group>
 
@@ -78,15 +80,21 @@ function LoginPage() {
                                     size="lg"
                                     onChange={e => setPassword(e.target.value)}
                                     autoComplete="current-password"
+                                    required
                                 />
                             </Form.Group>
                             <Button
                                 variant="outline-light"
-                                type="submit" s
+                                type="submit"
                                 size="lg"
+                                className="m-2 px-5"
+
                             >
                                 {is_loading ? <Spinner /> : "Login"}
                             </Button>
+                            <p>
+                                Are you new here ? <Link to="/register" style={{ marginLeft: "5px", textDecoration: "none", fontWeight: "bold", color: "orange" }} >Register</Link>
+                            </p>
                         </form>
                     </Card.Body>
                 </Card>
