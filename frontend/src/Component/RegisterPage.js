@@ -109,7 +109,7 @@ function RegisterPage() {
                                     autoComplete="current-password"
                                 />
                             </Form.Group>
-                            {is_error && <div className="alert alert-danger">{is_error}</div>}
+                            {/* {is_error && <div className="alert alert-danger">{is_error}</div>} */}
 
                             <Button
                                 variant="outline-light"
@@ -117,7 +117,7 @@ function RegisterPage() {
                                 className="m-2 px-5"
                                 size="lg"
                             >
-                                {is_loading ? <Spinner /> : "Register"}
+                                {/* {is_loading ? <Spinner /> : "Register"} */}
                             </Button>
                         </form>
                     </Card.Body>
