@@ -25,11 +25,14 @@ const AccountSlice = createSlice({
         is_loading: false,
         is_error: null,
         is_created: null,
+        is_authenticated: localStorage.getItem("authtoken") || null
     },
     reducers: {
         logout(state) {
             state.user = null
+            state.is_authenticated = null
             localStorage.removeItem("authtoken")
+
         },
         resetIsCreated(state) {
             state.is_created = null
@@ -44,6 +47,7 @@ const AccountSlice = createSlice({
                 state.is_loading = false
                 state.is_error = null
                 state.user = jwtDecode(action.payload.access).name
+                state.is_authenticated = true
                 localStorage.setItem("authtoken", JSON.stringify(action.payload))
             })
             .addCase(loginUser.rejected, (state, action) => {
