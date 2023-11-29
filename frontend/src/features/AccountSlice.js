@@ -1,42 +1,25 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import axios from "axios"
+import { loginAPI, registerAPI } from "./apiProvider"
 
 export const loginUser = createAsyncThunk("loginUser", async ({ email, password }, { rejectWithValue }) => {
     try {
-        const response = await axios.post("http://127.0.0.1:8000/api/account/token/", {
-            email: email,
-            password: password
-        })
+        const response = await loginAPI({ email, password })
         return response.data
     } catch (error) {
-        if (error.response && error.response.status === 401) {
-            return rejectWithValue("Incorrect email or password. Please try again.");
-        } else {
-            return rejectWithValue('Network error. Please try again.');
-        }
+        return rejectWithValue(error.message);
+
     }
 })
+
 export const registerUser = createAsyncThunk("registerUser", async ({ name, email, password1 }, { rejectWithValue }) => {
     try {
-        const response = await axios.post("http://127.0.0.1:8000/api/account/register/", {
-            name: name,
-            email: email,
-            password: password1
-        })
+        const response = await registerAPI({ name, email, password1 })
         return response.data
+
     } catch (error) {
-        if (error.response && error.response.status === 400) {
-            return rejectWithValue(error.response.data.email[0]);
-        } else {
-            return rejectWithValue('Network error. Please try again.');
-        }
+        return rejectWithValue(error.message)
     }
 })
-
-
-
-
-
 
 const AccountSlice = createSlice({
     name: 'account',
@@ -67,6 +50,7 @@ const AccountSlice = createSlice({
             .addCase(loginUser.rejected, (state, action) => {
                 state.is_loading = false
                 state.is_error = action.payload
+
             })
             .addCase(registerUser.pending, (state) => {
                 state.is_loading = true

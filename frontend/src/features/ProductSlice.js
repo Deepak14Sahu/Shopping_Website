@@ -1,10 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import axios from "axios"
+import { productsList } from "./apiProvider"
 
-export const getAllProducts = createAsyncThunk("getProducts", async () => {
-    const response = await axios.get("http://127.0.0.1:8000/api/product/list")
-    return response.data
-
+export const getAllProducts = createAsyncThunk("getProducts", async (rejectWithValue) => {
+    try {
+        return await productsList()
+    } catch (error) {
+        return rejectWithValue(error.message)
+    }
 })
 
 const ProductSlice = createSlice({
