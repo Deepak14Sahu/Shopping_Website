@@ -1,4 +1,7 @@
 from django.db import models
+from django.contrib.auth import get_user_model
+
+User= get_user_model()
 
 class ProductList(models.Model):
     name = models.CharField(max_length=100)
@@ -9,3 +12,10 @@ class ProductList(models.Model):
     def __str__(self):
         return self.name
 
+class Cart(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    
+    products = models.ManyToManyField(ProductList)
+    
+    def __str__(self):
+        return self.user.name + str(self.products.count())
