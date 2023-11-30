@@ -45,3 +45,16 @@ export const productsList = async () => {
     }
 
 }
+
+export const ProductDetailsAPI = async ({ productId }) => {
+    try {
+        const response = await axios.get(`${BASE_URL}/product/list/${productId}/`)
+        return response.data
+    } catch (error) {
+        if (error.response && error.response.status === 404) {
+            throw new Error("Page Not Found")
+        }
+        throw new Error("An error occured!! refresh")
+    }
+
+}
