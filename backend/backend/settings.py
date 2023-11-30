@@ -131,9 +131,8 @@ REST_FRAMEWORK = {
     )
 }
 
-#customize JWT token
 SIMPLE_JWT = {
   # It will work instead of the default serializer(TokenObtainPairSerializer).
-  "TOKEN_OBTAIN_SERIALIZER": "my_app.serializers.MyTokenObtainPairSerializer",
+  "TOKEN_OBTAIN_SERIALIZER": "account.serializers.MyTokenObtainPairSerializer",
   # ...
 }
