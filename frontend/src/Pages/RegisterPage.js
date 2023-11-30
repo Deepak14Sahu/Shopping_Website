@@ -3,7 +3,7 @@ import { Container, Col, Card, Form, Button, Spinner } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { registerUser, resetIsCreated } from "../features/AccountSlice";
+import { registerUser, reset } from "../features/AccountSlice";
 
 
 
@@ -56,7 +56,7 @@ function RegisterPage() {
             navigate('/login')
         }
         return () => {
-            dispatch(resetIsCreated())
+            dispatch(reset())
         }
     }, [is_error, is_created, navigate, dispatch])
 

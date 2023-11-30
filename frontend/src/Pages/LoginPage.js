@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Container, Col, Card, Form, Button, Spinner } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { loginUser } from "../features/AccountSlice";
-import { Link, useNavigate } from "react-router-dom";
+import { loginUser, reset } from "../features/AccountSlice";
+import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
 
@@ -10,24 +10,20 @@ function LoginPage() {
     const dispatch = useDispatch()
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const navigate = useNavigate()
-    const { user, is_loading, is_error } = useSelector((state) => state.account);
+    const { is_loading, is_error } = useSelector((state) => state.account);
+
     const handleLogin = (e) => {
         e.preventDefault();
         dispatch(loginUser({ email, password }))
 
     }
     useEffect(() => {
-
         if (is_error) {
             toast.error(is_error)
+            dispatch(reset())
         }
-        if (user) {
-            toast.success("Logged In")
-            navigate('/products')
 
-        }
-    }, [is_error, user, navigate])
+    }, [is_error, dispatch])
 
     return (
         <Container

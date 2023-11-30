@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { loginAPI, registerAPI } from "./apiProvider"
 import { jwtDecode } from "jwt-decode";
+import { toast } from "react-toastify";
 
 export const loginUser = createAsyncThunk("loginUser", async ({ email, password }, { rejectWithValue }) => {
     try {
@@ -34,8 +35,12 @@ const AccountSlice = createSlice({
             localStorage.removeItem("authtoken")
 
         },
-        resetIsCreated(state) {
+        reset(state) {
+            state.user = null
+            state.is_loading = false
+            state.is_error = null
             state.is_created = null
+
         }
     },
     extraReducers(builder) {
@@ -49,6 +54,7 @@ const AccountSlice = createSlice({
                 state.user = jwtDecode(action.payload.access).name
                 state.is_authenticated = true
                 localStorage.setItem("authtoken", JSON.stringify(action.payload))
+                toast.success(`Welcome ${state.user.toUpperCase()}`)
             })
             .addCase(loginUser.rejected, (state, action) => {
                 state.is_loading = false
@@ -72,4 +78,4 @@ const AccountSlice = createSlice({
 })
 
 export default AccountSlice.reducer
-export const { logout, resetIsCreated } = AccountSlice.actions
+export const { logout, reset } = AccountSlice.actions
