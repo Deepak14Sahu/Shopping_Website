@@ -56,5 +56,18 @@ export const ProductDetailsAPI = async ({ productId }) => {
         }
         throw new Error("An error occured!! refresh")
     }
+}
+export const refreshAccessTokenAPI = async ({ refreshToken }) => {
+    try {
+        const response = await axios.post(`${BASE_URL}/account/token/refresh/`, {
+            refresh: refreshToken
+        })
+        return response.data
+    } catch (error) {
+        if (error.response && error.response.status === 404) {
+            throw new Error("Page Not Found")
+        }
+        throw new Error("An error occured!! refresh")
+    }
 
 }

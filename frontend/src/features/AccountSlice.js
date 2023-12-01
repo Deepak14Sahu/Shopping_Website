@@ -3,6 +3,7 @@ import { loginAPI, registerAPI } from "./apiProvider"
 import { jwtDecode } from "jwt-decode";
 import { toast } from "react-toastify";
 
+
 export const loginUser = createAsyncThunk("loginUser", async ({ email, password }, { rejectWithValue }) => {
     try {
         return await loginAPI({ email, password })
@@ -19,20 +20,28 @@ export const registerUser = createAsyncThunk("registerUser", async ({ name, emai
     }
 })
 
+const get_token = () => {
+    if (localStorage.getItem("authtoken")) {
+        return JSON.parse(localStorage.getItem("authtoken"))
+    }
+    return null
+}
+
 const AccountSlice = createSlice({
     name: 'account',
     initialState: {
-        user: null,
+        user: (get_token()) ? jwtDecode(get_token().access).name : null,
         is_loading: false,
         is_error: null,
         is_created: null,
-        is_authenticated: localStorage.getItem("authtoken") || null
+        is_authenticated: get_token()
     },
     reducers: {
         logout(state) {
             state.user = null
             state.is_authenticated = null
             localStorage.removeItem("authtoken")
+            toast.info("Logged Out Successfully!!")
 
         },
         reset(state) {
@@ -52,7 +61,7 @@ const AccountSlice = createSlice({
                 state.is_loading = false
                 state.is_error = null
                 state.user = jwtDecode(action.payload.access).name
-                state.is_authenticated = true
+                state.is_authenticated = action.payload
                 localStorage.setItem("authtoken", JSON.stringify(action.payload))
                 toast.success(`Welcome ${state.user.toUpperCase()}`)
             })

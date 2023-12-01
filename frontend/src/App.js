@@ -10,7 +10,6 @@ import ProductDetails from './Pages/ProductDetails';
 import { PageNotFound } from './Pages/PageNotFound';
 
 
-
 function App() {
   return (
     <>
