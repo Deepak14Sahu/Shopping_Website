@@ -1,4 +1,5 @@
 import axios from "axios"
+import { get_token } from "./AccountSlice"
 
 const BASE_URL = "http://127.0.0.1:8000/api"
 
@@ -46,7 +47,7 @@ export const productsList = async () => {
 
 }
 
-export const ProductDetailsAPI = async ({ productId }) => {
+export const productDetailsAPI = async ({ productId }) => {
     try {
         const response = await axios.get(`${BASE_URL}/product/list/${productId}/`)
         return response.data
@@ -57,6 +58,20 @@ export const ProductDetailsAPI = async ({ productId }) => {
         throw new Error("An error occured!! refresh")
     }
 }
+
+export const cartProductsAPI = async () => {
+    try {
+        const response = await axios.get(`${BASE_URL}/product/cart/`, {
+            headers: {
+                'Authorization': 'Bearer ' + get_token().access
+            }
+        })
+        return response.data
+    } catch (error) {
+        throw new Error("Session expired. Please login again!!")
+    }
+}
+
 export const refreshAccessTokenAPI = async ({ refreshToken }) => {
     try {
         const response = await axios.post(`${BASE_URL}/account/token/refresh/`, {
@@ -64,7 +79,7 @@ export const refreshAccessTokenAPI = async ({ refreshToken }) => {
         })
         return response.data
     } catch (error) {
-        if (error.response && error.response.status === 404) {
+        if (error.response && error.response.status === 401) {
             throw new Error("Page Not Found")
         }
         throw new Error("An error occured!! refresh")

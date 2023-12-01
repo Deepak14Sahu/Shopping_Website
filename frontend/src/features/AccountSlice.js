@@ -20,7 +20,7 @@ export const registerUser = createAsyncThunk("registerUser", async ({ name, emai
     }
 })
 
-const get_token = () => {
+export const get_token = () => {
     if (localStorage.getItem("authtoken")) {
         return JSON.parse(localStorage.getItem("authtoken"))
     }

@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { Button, Card, Col, Row } from "react-bootstrap";
 import "./CSS/ProductDetails.css"
-import { ProductDetailsAPI } from "../features/apiProvider";
+import { productDetailsAPI } from "../features/apiProvider";
 import { useEffect, useState } from "react";
 
 export default function ProductDetails() {
@@ -11,7 +11,7 @@ export default function ProductDetails() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const data = await ProductDetailsAPI({ productId })
+                const data = await productDetailsAPI({ productId })
                 setProductData(data)
             } catch (error) {
                 navigate("/*")
