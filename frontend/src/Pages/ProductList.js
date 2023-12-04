@@ -3,6 +3,7 @@ import "./CSS/ProductList.css"
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { getAllProducts } from "../features/ProductSlice";
+import { addCartProduct } from "../features/CartSlice";
 
 
 function ProductList() {
@@ -38,6 +39,7 @@ function ProductList() {
                                 <div className="card-text">&#8377; {product.price}</div>
                                 <Link
                                     className="card-button text-decoration-none"
+                                    onClick={() => dispatch(addCartProduct(product.id))}
                                 >
                                     Add to Cart
                                 </Link>

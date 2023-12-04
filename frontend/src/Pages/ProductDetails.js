@@ -3,8 +3,11 @@ import { Button, Card, Col, Row } from "react-bootstrap";
 import "./CSS/ProductDetails.css"
 import { productDetailsAPI } from "../features/apiProvider";
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { addCartProduct } from "../features/CartSlice";
 
 export default function ProductDetails() {
+    const dispatch = useDispatch()
     const { productId } = useParams()
     const [productData, setProductData] = useState({})
     const navigate = useNavigate()
@@ -37,7 +40,7 @@ export default function ProductDetails() {
                         <Card.Title className="product-title">{productData.name}</Card.Title>
                         <Card.Text className="product-description">{productData.description}</Card.Text>
                         <span className="product-price">&#8377; {productData.price}</span>
-                        <Button variant="secondary" className="add-to-cart-btn">
+                        <Button variant="secondary" className="add-to-cart-btn" onClick={() => dispatch(addCartProduct(productId))}>
                             Add to Cart
                         </Button>
                     </Card.Body>

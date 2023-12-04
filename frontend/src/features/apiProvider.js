@@ -72,6 +72,32 @@ export const cartProductsAPI = async () => {
     }
 }
 
+export const removeCartProductAPI = async ({ productId }) => {
+    try {
+        const response = await axios.put(`${BASE_URL}/product/cart/${productId}/remove/`, {}, {
+            headers: {
+                'Authorization': 'Bearer ' + get_token().access
+            }
+        })
+        return response.data
+    } catch (error) {
+        throw new Error("Session expired. Please login again!!")
+    }
+}
+
+export const addCartProductAPI = async ({ productId }) => {
+    try {
+        const response = await axios.put(`${BASE_URL}/product/cart/${productId}/add/`, {}, {
+            headers: {
+                'Authorization': 'Bearer ' + get_token().access
+            }
+        })
+        return response.data
+    } catch (error) {
+        throw new Error("Session expired. Please login again!!")
+    }
+}
+
 export const refreshAccessTokenAPI = async ({ refreshToken }) => {
     try {
         const response = await axios.post(`${BASE_URL}/account/token/refresh/`, {

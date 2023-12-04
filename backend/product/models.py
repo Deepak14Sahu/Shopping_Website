@@ -8,7 +8,6 @@ class ProductList(models.Model):
     description = models.TextField()
     price = models.DecimalField(max_digits=10 ,decimal_places=2)
     image = models.URLField(blank=True)
-    # quantity        = models.IntegerField()
     
     def __str__(self):
         return self.name
@@ -22,7 +21,6 @@ class CartProductEntries(models.Model):
 class Cart(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     products = models.ManyToManyField('ProductList', through='CartProductEntries')
-    
     def calculate_total_price(self):
         total = sum(product.price for product in self.products.all())
         return total
