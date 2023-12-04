@@ -3,7 +3,6 @@ import { loginAPI, registerAPI } from "./apiProvider"
 import { jwtDecode } from "jwt-decode";
 import { toast } from "react-toastify";
 
-
 export const loginUser = createAsyncThunk("loginUser", async ({ email, password }, { rejectWithValue }) => {
     try {
         return await loginAPI({ email, password })

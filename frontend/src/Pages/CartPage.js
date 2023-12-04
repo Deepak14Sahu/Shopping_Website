@@ -11,9 +11,6 @@ function CartItem({ product }) {
         dispatch(removeCartProduct(product.id))
 
     };
-    const handleQuantityChange = (e, productId) => {
-        const newQuantity = parseInt(e.target.value, 10);
-    };
 
     return (
         <tr>
@@ -43,7 +40,6 @@ function CartItem({ product }) {
                     type="number"
                     className="form-control form-control-lg text-center"
                     value={product.quantity || 1}
-                    onChange={(e) => handleQuantityChange(e, product.id)}
                 />
             </td>
             <td className="actions" data-th="" style={{ textAlign: "center" }}>
@@ -66,10 +62,7 @@ function CartPage() {
         dispatch(getCartProducts())
     }, [dispatch])
     const products = useSelector((state) => state.cart.cart);
-    const cartQuantity = products.reduce(
-        (cartQuantity, product) => cartQuantity + product.quantity,
-        0
-    );
+    const cartQuantity = products.length
 
     const total = useMemo(() => {
         return products.reduce(

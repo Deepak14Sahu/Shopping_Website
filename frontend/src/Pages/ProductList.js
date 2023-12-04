@@ -3,7 +3,7 @@ import "./CSS/ProductList.css"
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { getAllProducts } from "../features/ProductSlice";
-import { addCartProduct } from "../features/CartSlice";
+import { addCartProduct, getCartProducts } from "../features/CartSlice";
 
 
 function ProductList() {
@@ -11,8 +11,12 @@ function ProductList() {
     const navigate = useNavigate()
     useEffect(() => {
         dispatch(getAllProducts())
+        dispatch(getCartProducts())
     }, [dispatch])
+
     const Products = useSelector((state) => state.product.products)
+    const cart = useSelector((state) => state.cart.cart)
+
     return (
         <div className="container" style={{ marginTop: "20px" }}>
             <div className="row">
@@ -37,12 +41,19 @@ function ProductList() {
                                     {product.description.slice(0, 90)}...
                                 </div>
                                 <div className="card-text">&#8377; {product.price}</div>
-                                <Link
+
+                                {cart.length !== 0 && cart.some((item) => item.id === product.id) ? <Link to={'/cart'}
+                                    className="card-button text-decoration-none"
+                                >
+                                    Go to Cart
+                                </Link> : <Link
                                     className="card-button text-decoration-none"
                                     onClick={() => dispatch(addCartProduct(product.id))}
                                 >
                                     Add to Cart
-                                </Link>
+                                </Link>}
+
+
                             </div>
                         </div>
                     ))}

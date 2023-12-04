@@ -5,6 +5,19 @@ import { productDetailsAPI } from "../features/apiProvider";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { addCartProduct } from "../features/CartSlice";
+import { useSelector } from 'react-redux'
+
+
+const Check = ({ productId }) => {
+    const cartProducts = useSelector(state => state.cart.cart)
+    const response = cartProducts.filter((product) => product.id === parseInt(productId))
+    if (response.length !== 0) {
+        return true
+    }
+    return false
+}
+
+
 
 export default function ProductDetails() {
     const dispatch = useDispatch()
@@ -40,9 +53,15 @@ export default function ProductDetails() {
                         <Card.Title className="product-title">{productData.name}</Card.Title>
                         <Card.Text className="product-description">{productData.description}</Card.Text>
                         <span className="product-price">&#8377; {productData.price}</span>
-                        <Button variant="secondary" className="add-to-cart-btn" onClick={() => dispatch(addCartProduct(productId))}>
-                            Add to Cart
-                        </Button>
+                        {Check({ productId }) ?
+                            <Button variant="secondary" className="add-to-cart-btn" onClick={() => navigate("/cart")}>
+                                Go to Cart
+                            </Button> :
+                            <Button variant="secondary" className="add-to-cart-btn" onClick={() => dispatch(addCartProduct(productId))}>
+                                Add to Cart
+                            </Button>
+                        }
+
                     </Card.Body>
                 </Col>
                 <Col xs={1}>
