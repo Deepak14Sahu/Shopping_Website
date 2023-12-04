@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import ProductList, Cart, CartProductEntries
+from .models import ProductList, Cart, CartProductEntries, WishlistProductEntries, Wishlist
 
 
 class CartProductEntryInline(admin.TabularInline):
@@ -19,6 +19,18 @@ class CartAdmin(admin.ModelAdmin):
 
     get_total_price.short_description = 'Total Price'
     
+class WishlistProductEntryInline(admin.TabularInline):
+    model = WishlistProductEntries
+    extra = 0
+    exclude = ['price']
+    
+
+
+class WishlistAdmin(admin.ModelAdmin):
+    inlines = [WishlistProductEntryInline]
+    list_display = ['user']
+    
     
 admin.site.register(ProductList)
 admin.site.register(Cart, CartAdmin)
+admin.site.register(Wishlist, WishlistAdmin)
