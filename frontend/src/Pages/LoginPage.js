@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { Container, Col, Card, Form, Button, Spinner } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { loginUser, reset } from "../features/AccountSlice";
+import { reset } from "../features/AccountSlice";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-
+import { loginUser } from "../features/apiProvider";
 
 function LoginPage() {
     const dispatch = useDispatch()
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const { is_loading, is_error } = useSelector((state) => state.account);
+    const { status, error } = useSelector((state) => state.account);
+
 
     const handleLogin = (e) => {
         e.preventDefault();
@@ -18,12 +19,12 @@ function LoginPage() {
 
     }
     useEffect(() => {
-        if (is_error) {
-            toast.error(is_error)
+        if (status === 'rejected') {
+            toast.error(error)
             dispatch(reset())
         }
 
-    }, [is_error, dispatch])
+    }, [status, dispatch, error])
 
     return (
         <Container
@@ -86,7 +87,7 @@ function LoginPage() {
                                 className="m-2 px-5"
 
                             >
-                                {is_loading ? <Spinner /> : "Login"}
+                                {status === 'loading' ? <Spinner /> : "Login"}
                             </Button>
                             <p>
                                 Are you new here ? <Link to="/register" style={{ marginLeft: "5px", textDecoration: "none", fontWeight: "bold", color: "orange" }} >Register</Link>

@@ -1,29 +1,18 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { Button, Card, Col, Row } from "react-bootstrap";
 import "./CSS/ProductDetails.css"
-import { productDetailsAPI } from "../features/apiProvider";
+import { productDetailsAPI, addCartProduct } from "../features/apiProvider";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { addCartProduct } from "../features/CartSlice";
 import { useSelector } from 'react-redux'
-
-
-const Check = ({ productId }) => {
-    const cartProducts = useSelector(state => state.cart.cart)
-    const response = cartProducts.filter((product) => product.id === parseInt(productId))
-    if (response.length !== 0) {
-        return true
-    }
-    return false
-}
-
-
 
 export default function ProductDetails() {
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     const { productId } = useParams()
     const [productData, setProductData] = useState({})
-    const navigate = useNavigate()
+    const cartProducts = useSelector(state => state.cart.cart)
+    const isProductInCart = cartProducts.some(product => product.id === parseInt(productId))
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -53,7 +42,7 @@ export default function ProductDetails() {
                         <Card.Title className="product-title">{productData.name}</Card.Title>
                         <Card.Text className="product-description">{productData.description}</Card.Text>
                         <span className="product-price">&#8377; {productData.price}</span>
-                        {Check({ productId }) ?
+                        {isProductInCart ?
                             <Button variant="secondary" className="add-to-cart-btn" onClick={() => navigate("/cart")}>
                                 Go to Cart
                             </Button> :
@@ -61,7 +50,6 @@ export default function ProductDetails() {
                                 Add to Cart
                             </Button>
                         }
-
                     </Card.Body>
                 </Col>
                 <Col xs={1}>

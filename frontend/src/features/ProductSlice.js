@@ -1,33 +1,27 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import { productsList } from "./apiProvider"
+import { createSlice } from "@reduxjs/toolkit"
+import { getAllProducts } from "./apiProvider"
 
-export const getAllProducts = createAsyncThunk("getProducts", async (_, { rejectWithValue }) => {
-    try {
-        return await productsList()
-    } catch (error) {
-        return rejectWithValue(error.message)
-    }
-})
 
 const ProductSlice = createSlice({
     name: "products",
     initialState: {
         products: [],
-        is_loading: false,
-        is_error: null
+        status: 'idle',
+        error: null
     },
     extraReducers(builder) {
         builder
             .addCase(getAllProducts.pending, (state) => {
+                state.status = 'loading'
                 state.is_loading = true
             })
             .addCase(getAllProducts.fulfilled, (state, action) => {
-                state.is_loading = false
+                state.status = 'success'
                 state.products = action.payload
             })
             .addCase(getAllProducts.rejected, (state, action) => {
-                state.is_loading = false
-                state.is_error = action.payload
+                state.status = 'rejected'
+                state.error = action.payload
             })
     },
 }

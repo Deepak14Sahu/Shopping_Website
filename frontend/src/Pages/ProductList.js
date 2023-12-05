@@ -1,10 +1,8 @@
-import { useDispatch, useSelector } from "react-redux";
 import "./CSS/ProductList.css"
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import { getAllProducts } from "../features/ProductSlice";
-import { addCartProduct, getCartProducts } from "../features/CartSlice";
-
+import { getAllProducts, getCartProducts, addCartProduct } from "../features/apiProvider";
 
 function ProductList() {
     const dispatch = useDispatch();

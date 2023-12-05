@@ -1,12 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useMemo } from "react";
-import { getCartProducts, removeCartProduct } from "../features/CartSlice";
+import { getCartProducts, removeCartProduct } from "../features/apiProvider";
 
 function CartItem({ product }) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-
     const handleDelete = () => {
         dispatch(removeCartProduct(product.id))
 

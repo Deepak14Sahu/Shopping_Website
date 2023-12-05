@@ -1,9 +1,10 @@
 import axios from "axios"
 import { get_token } from "./AccountSlice"
+import { createAsyncThunk } from "@reduxjs/toolkit"
 
 const BASE_URL = "http://127.0.0.1:8000/api"
 
-export const registerAPI = async ({ name, email, password1 }) => {
+export const registerUser = createAsyncThunk("registerUser", async ({ name, email, password1 }, { rejectWithValue }) => {
     try {
         const response = await axios.post(`${BASE_URL}/account/register/`, {
             name: name,
@@ -13,39 +14,40 @@ export const registerAPI = async ({ name, email, password1 }) => {
         return response.data
     } catch (error) {
         if (error.response && error.response.status === 400) {
-            throw new Error(error.response.data.email[0]);
+            return rejectWithValue(error.response.data.email[0]);
         } else {
-            throw new Error('Network error. Please try again.');
+            return rejectWithValue('Network error. Please try again.');
         }
     }
-}
+})
 
-export const loginAPI = async ({ email, password }) => {
+export const loginUser = createAsyncThunk("loginUser", async ({ email, password }, { rejectWithValue }) => {
     try {
         const response = await axios.post(`${BASE_URL}/account/token/`, {
             email: email,
             password: password
         })
+
         return response.data
     } catch (error) {
+
         if (error.response && error.response.status === 401) {
-            throw new Error('Incorrect email or password. Please try again.');
+            return rejectWithValue('Incorrect email or password. Please try again.');
         } else {
-            throw new Error('Network error. Please try again.');
+            return rejectWithValue('Network error. Please try again.');
         }
+
     }
+})
 
-}
-
-export const productsList = async () => {
+export const getAllProducts = createAsyncThunk("getProducts", async (_, { rejectWithValue }) => {
     try {
         const response = await axios.get(`${BASE_URL}/product/list/`)
         return response.data
     } catch (error) {
-        throw new Error("An error occured!! refresh")
+        return rejectWithValue("An error occured!! refresh")
     }
-
-}
+})
 
 export const productDetailsAPI = async ({ productId }) => {
     try {
@@ -59,7 +61,7 @@ export const productDetailsAPI = async ({ productId }) => {
     }
 }
 
-export const cartProductsAPI = async () => {
+export const getCartProducts = createAsyncThunk("getCartProducts", async (_, { rejectWithValue }) => {
     try {
         const response = await axios.get(`${BASE_URL}/product/cart/`, {
             headers: {
@@ -68,24 +70,11 @@ export const cartProductsAPI = async () => {
         })
         return response.data
     } catch (error) {
-        throw new Error("Session expired. Please login again!!")
+        return rejectWithValue("Session expired. Please login again!!")
     }
-}
+})
 
-export const removeCartProductAPI = async ({ productId }) => {
-    try {
-        const response = await axios.put(`${BASE_URL}/product/cart/${productId}/remove/`, {}, {
-            headers: {
-                'Authorization': 'Bearer ' + get_token().access
-            }
-        })
-        return response.data
-    } catch (error) {
-        throw new Error("Session expired. Please login again!!")
-    }
-}
-
-export const addCartProductAPI = async ({ productId }) => {
+export const addCartProduct = createAsyncThunk("addCartProducts", async (productId, { rejectWithValue }) => {
     try {
         const response = await axios.put(`${BASE_URL}/product/cart/${productId}/add/`, {}, {
             headers: {
@@ -94,9 +83,22 @@ export const addCartProductAPI = async ({ productId }) => {
         })
         return response.data
     } catch (error) {
-        throw new Error("Session expired. Please login again!!")
+        return rejectWithValue("Session expired. Please login again!!")
     }
-}
+})
+
+export const removeCartProduct = createAsyncThunk("removeCartProducts", async (productId, { rejectWithValue }) => {
+    try {
+        const response = await axios.put(`${BASE_URL}/product/cart/${productId}/remove/`, {}, {
+            headers: {
+                'Authorization': 'Bearer ' + get_token().access
+            }
+        })
+        return response.data
+    } catch (error) {
+        return rejectWithValue("Session expired. Please login again!!")
+    }
+})
 
 export const refreshAccessTokenAPI = async ({ refreshToken }) => {
     try {

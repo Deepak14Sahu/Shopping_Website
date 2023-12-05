@@ -3,14 +3,14 @@ import { Container, Col, Card, Form, Button, Spinner } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { registerUser, reset } from "../features/AccountSlice";
-
+import { reset } from "../features/AccountSlice";
+import { registerUser } from "../features/apiProvider";
 
 
 function RegisterPage() {
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const { is_loading, is_error, is_created } = useSelector((state) => state.account);
+    const { status, error } = useSelector((state) => state.account);
 
 
     const [formData, setFormData] = useState({
@@ -20,7 +20,7 @@ function RegisterPage() {
         password2: ''
     }
     )
-    const [error, setError] = useState(false)
+    const [formError, setFormError] = useState(false)
 
 
     const handleChange = (e) => {
@@ -39,7 +39,7 @@ function RegisterPage() {
         }
         if (formData.password1 !== formData.password2) {
             toast.error("Password Don't match")
-            setError(true)
+            setFormError(true)
             return
 
         }
@@ -48,19 +48,17 @@ function RegisterPage() {
     }
     useEffect(() => {
 
-        if (is_error) {
-            toast.error(is_error)
+        if (status === 'rejected') {
+            toast.error(error)
         }
-        if (is_created) {
+        if (status === 'created') {
             toast.success("Your account has been created. Please Login!!")
             navigate('/login')
         }
         return () => {
             dispatch(reset())
         }
-    }, [is_error, is_created, navigate, dispatch])
-
-
+    }, [status, error, navigate, dispatch])
 
     return (
         <Container
@@ -114,10 +112,11 @@ function RegisterPage() {
                                     value={formData.email}
                                     autoComplete="Email"
                                     required
-                                    isInvalid={is_error}
+                                    isInvalid={error}
                                 />
-                                {is_error && <p style={{ color: "red" }}>{is_error}</p>}
-
+                                {status === 'rejected' &&
+                                    <p style={{ color: "red" }}>{error}</p>
+                                }
                             </Form.Group>
 
                             <Form.Group
@@ -133,7 +132,7 @@ function RegisterPage() {
                                     onChange={handleChange}
                                     autoComplete="current-password"
                                     required
-                                    isInvalid={error}
+                                    isInvalid={formError}
                                 />
                             </Form.Group>
                             <Form.Group
@@ -149,7 +148,7 @@ function RegisterPage() {
                                     onChange={handleChange}
                                     autoComplete="current-password"
                                     required
-                                    isInvalid={error}
+                                    isInvalid={formError}
                                 />
                             </Form.Group>
 
@@ -159,7 +158,7 @@ function RegisterPage() {
                                 className="m-2 px-5"
                                 size="lg"
                             >
-                                {is_loading ? <Spinner /> : " Register"}
+                                {status === 'loading' ? <Spinner /> : " Register"}
 
                             </Button>
 
