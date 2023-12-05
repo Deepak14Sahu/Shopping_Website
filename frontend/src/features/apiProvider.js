@@ -100,6 +100,45 @@ export const removeCartProduct = createAsyncThunk("removeCartProducts", async (p
     }
 })
 
+export const getWishlistProducts = createAsyncThunk("getWishlistProducts", async (_, { rejectWithValue }) => {
+    try {
+        const response = await axios.get(`${BASE_URL}/product/wishlist/`, {
+            headers: {
+                'Authorization': 'Bearer ' + get_token().access
+            }
+        })
+        return response.data
+    } catch (error) {
+        return rejectWithValue("Session expired. Please login again!!")
+    }
+})
+
+export const addWishlistProduct = createAsyncThunk("addWishlistProduct", async (productId, { rejectWithValue }) => {
+    try {
+        const response = await axios.put(`${BASE_URL}/product/wishlist/${productId}/add/`, {}, {
+            headers: {
+                'Authorization': 'Bearer ' + get_token().access
+            }
+        })
+        return response.data
+    } catch (error) {
+        return rejectWithValue("Session expired. Please login again!!")
+    }
+})
+
+export const removeWishlistProduct = createAsyncThunk("removeWishlistProduct", async (productId, { rejectWithValue }) => {
+    try {
+        const response = await axios.put(`${BASE_URL}/product/wishlist/${productId}/remove/`, {}, {
+            headers: {
+                'Authorization': 'Bearer ' + get_token().access
+            }
+        })
+        return response.data
+    } catch (error) {
+        return rejectWithValue("Session expired. Please login again!!")
+    }
+})
+
 export const refreshAccessTokenAPI = async ({ refreshToken }) => {
     try {
         const response = await axios.post(`${BASE_URL}/account/token/refresh/`, {

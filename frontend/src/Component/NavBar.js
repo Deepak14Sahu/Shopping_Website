@@ -10,7 +10,10 @@ import { logout } from "../features/AccountSlice";
 
 function NavBar() {
     const dispatch = useDispatch()
+    const cart = useSelector((state) => state.cart.cart)
+    const wishlist = useSelector((state) => state.wishlist.wishlist)
     const is_authenticated = useSelector(state => state.account.is_authenticated)
+
 
     return (
         <Navbar sticky="top" expand="lg" style={{ background: "#5a5a5a" }}>
@@ -55,7 +58,7 @@ function NavBar() {
                         <NavLink to="/wishlist" className="mx-3">
                             <i className="fa fa-heart fa-2x" style={{ color: "black" }}></i>
                             <span className="position-absolute  translate-middle badge rounded-pill bg-danger">
-                                2
+                                {wishlist.length}
                             </span>
                         </NavLink>
                         <NavLink to="/cart" className="mx-3">
@@ -65,7 +68,7 @@ function NavBar() {
                             ></i>
 
                             <span className="position-absolute translate-middle badge rounded-pill bg-danger">
-                                2
+                                {cart.length}
                             </span>
                         </NavLink>
                         <Nav className="mx-3">

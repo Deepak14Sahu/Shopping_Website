@@ -21,7 +21,7 @@ function CartItem({ product }) {
                             alt=""
                             className="img-fluid d-none d-md-block rounded mb-2 shadow"
                             onClick={() =>
-                                navigate(`../products/${product.id}`, { state: product })
+                                navigate(`../products/${product.id}`)
                             }
                         />
                     </div>

@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { Button, Card, Col, Row } from "react-bootstrap";
 import "./CSS/ProductDetails.css"
-import { productDetailsAPI, addCartProduct } from "../features/apiProvider";
+import { productDetailsAPI, addCartProduct, removeWishlistProduct, addWishlistProduct } from "../features/apiProvider";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from 'react-redux'
@@ -12,7 +12,13 @@ export default function ProductDetails() {
     const { productId } = useParams()
     const [productData, setProductData] = useState({})
     const cartProducts = useSelector(state => state.cart.cart)
+    const wishlistProducts = useSelector(state => state.wishlist.wishlist)
+
     const isProductInCart = cartProducts.some(product => product.id === parseInt(productId))
+    const isProductInWishlist = wishlistProducts.some(product => product.id === parseInt(productId))
+    const AddWishlistClick = () => {
+        isProductInWishlist ? dispatch(removeWishlistProduct(productId)) : dispatch(addWishlistProduct(productId))
+    }
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -56,6 +62,8 @@ export default function ProductDetails() {
                     <i
                         className="fa fa-heart fa-2x"
                         aria-hidden="true"
+                        onClick={AddWishlistClick}
+                        style={{ color: (isProductInWishlist) ? 'red' : "#5a5a5a" }}
                     ></i>
                 </Col>
             </Row>
